@@ -198,6 +198,8 @@ client.on("interactionCreate", async (interaction) => {
       staff.average = parseFloat(media); // Atualizar o campo `average` com a nova média
       await db.staffs.set(resposta1.toString(), staff);
 
+      
+
       const staffUser = await client.users.fetch(staff.id);
 
       let embed = new Discord.EmbedBuilder()
@@ -230,6 +232,48 @@ client.on("interactionCreate", async (interaction) => {
       );
       if (canalLogs) {
         await canalLogs.send({ embeds: [embed] });
+      }
+    }
+  }
+});
+
+// Defina o ID do canal onde o bot reagirá
+const CHANNEL_ID = '1261513575999082587';  // Substitua pelo ID real do seu canal
+const EMOJI = '✅️';  // Emoji de reação (pode ser outro)
+
+client.on('messageCreate', async (message) => {
+  // Evita que o bot reaja às suas próprias mensagens
+  if (message.author.bot) return;
+
+  // Verifica se a mensagem contém uma imagem
+  if (message.attachments.size > 0 && message.channel.id === CHANNEL_ID) {
+    // Verifica se a imagem tem uma extensão válida
+    const attachment = message.attachments.first();
+    if (attachment.url.match(/\.(jpg|jpeg|png|gif)$/i)) {
+      try {
+        // Reage com o emoji na mensagem
+        await message.react(EMOJI);
+      } catch (error) {
+        console.error('Erro ao reagir à mensagem:', error);
+      }
+    }
+  }
+});
+
+client.on('messageReactionAdd', async (reaction, user) => {
+  // Verifica se a reação foi no emoji correto e se a mensagem é a de uma imagem
+  if (reaction.emoji.name === EMOJI && !user.bot) {
+    // Verifica se o usuário é do staff (ajuste conforme seus cargos)
+    const staffRoles = ['Ajudante', 'Staff', 'Moderador', 'Administrador', 'DONO DO SERVER'];  // Substitua pelos cargos do seu servidor
+    const member = await reaction.message.guild.members.fetch(user.id);
+    const hasStaffRole = member.roles.cache.some(role => staffRoles.includes(role.name.toLowerCase()));
+
+    if (hasStaffRole) {
+      try {
+        // Deleta a mensagem
+        await reaction.message.delete();
+      } catch (error) {
+        console.error('Erro ao deletar a mensagem:', error);
       }
     }
   }
