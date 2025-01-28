@@ -1,0 +1,28 @@
+{
+  "name": "balabot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felipov/BOT.git"
+  },
+  "author": "felipo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felipov/BOT/issues"
+  },
+  "homepage": "https://github.com/felipov/BOT#readme",
+  "description": "",
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "colors": "^1.4.0",
+    "discord.js": "^14.17.3",
+    "dotenv": "^16.4.7",
+    "ms": "^2.1.3",
+    "quick.db": "^9.1.7"
+  }
+}
